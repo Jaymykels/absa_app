@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
+    <title>Restauranty E-Review Analyzer</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+        <a class="navbar-brand mx-auto text-light" href="#"><em>Restauranty E-Review Analyzer</em></a>
+    </nav>
+    
+    <div class="container mt-5">
+        <form action="{{ url_for('main') }}" method="POST">
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select class="form-control" id="category" name="category" required>
+                    {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="target">Opinion Target</label>
+                <select class="form-control selectpicker" name="target" id="target" data-live-search="true">
+                    {% for target in targets %}
+                        <option value="{{ target }}">{{ target }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <input type="submit" value="Analyze!" class="btn btn-primary">
+
+        </form>
+    </div>
+
+    <div class="container mt-5">
+        {% if result %}
+        <div class="card border-primary mb-3">
+            <div class="card-header bg-transparent border-primary text-primary">
+                Result!
+            </div>
+            <div class="card-body text-primary">
+                <div class="card-text">
+                    <div class="row text-dark">
+                        <div class="col-md-12">
+                            {% for variable, value in original_input.items() %}
+                            <div class="mb-3">
+                                <b>{{ variable }}</b> : {{ value }}
+                            </div>
+                            {% endfor %}
+                            <div class="mb-3">
+                                <b>Polarity</b> : 
+                                {% if result == 'positive' %}
+                                    <span class="badge badge-success">{{ result }}</span>
+                                {% elif result == 'negative' %}
+                                    <span class="badge badge-danger">{{ result }}</span>
+                                {% else %}
+                                    <span class="badge badge-light">{{ result }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+</body>
+</html>
